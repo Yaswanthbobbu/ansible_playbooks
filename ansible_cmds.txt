@@ -1,0 +1,56 @@
+sudo apt update
+sudo apt install ansible
+
+#create project folder:
+	git clone https://github.com/Yaswanthbobbu/ansible_playbooks.git
+	change to local directory
+	chmod 400 ansible_playbooks/ubuntu-keys/ubuntu-key.pem
+
+
+#ansible_commands
+ansible -m ping all
+ansible all -a "whoami"  "python --version"
+ansible groupofgroups -a "whoami"
+ansible --list-host all
+ansible --list-host \!dev  qa:dev
+
+ansible-playbook playbooks/03-variables.yml -e variable1=CommandLineValue
+ansible-playbook playbooks/06-playbooks.yml --list-tags  --list-tasks  --list-hosts
+ansible-playbook -l dev playbooks/01-ping.yml
+
+#ansible dynamic inventory [boto3 and botocore]
+
+sudo apt install python3-pip
+sudo apt install python3-boto3
+sudo apt install python3-pip -y
+
+#to install awscli 
+sudo apt install awscli --fail  [or]
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo apt install unzip
+sudo ./aws/install
+
+ansible-inventory --list   --graph
+
+#other ansible commands
+ansible qa -m setup
+ansible qa -m ping                      # Check connectivity to qa group
+ansible qa -m command -a "uptime"       # Run uptime command on qa servers
+ansible qa -m copy -a "src=/local/file dest=/remote/path"  # Copy file to qa servers
+ansible qa -m apt -a "name=nginx state=present"  # Install nginx on qa servers
+ansible qa -m service -a "name=apache2 state=restarted"  # Restart Apache on qa servers
+ansible qa -m user -a "name=deploy state=present"  # Create user on qa servers
+ansible qa -b -m shell -a "tail /var/log/syslog"  # Run command with sudo privileges
+ansible qa -m git -a "repo=https://github.com/user/repo dest=/opt/app"  # Clone git repository
+ansible qa -m file -a "path=/tmp/test state=directory mode=0755"  # Create directory
+
+#bash commands:
+hostname -I > private IP (ubuntu)
+curl ifconfig.me  > public IP
+
+find folder  : find ~ -type d -name "ansible_playbooks"
+partial name : find ~ -type d -iname "ansible"
+ssh  -vvv -i ./ubuntu-keys/ubuntu-key.pem ubuntu@54.80.89.127
+

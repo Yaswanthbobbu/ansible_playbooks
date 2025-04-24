@@ -7,3 +7,4 @@
   tasks:
     - name: Variable Value
       debug: msg="Value is {{ variable1 }}"
+      
